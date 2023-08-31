@@ -28,7 +28,7 @@
 	},
 	"dependencies": {
 		"@inlang/config": "*",
-		"@inlang-git/fs": "*"
+		"@lix-js/fs": "*"
 	},
 	"license": "Apache-2.0",
 	"devDependencies": {

@@ -1,6 +1,6 @@
 import { Command } from "commander"
 import { log } from "../../utilities/log.js"
-import type { NodeishFilesystem } from "@inlang-git/fs"
+import type { NodeishFilesystem } from "@lix-js/fs"
 import fs from "node:fs/promises"
 import prompts from "prompts"
 import { createProjectConfig } from "@inlang/create-project"

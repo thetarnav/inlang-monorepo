@@ -1,5 +1,5 @@
 import type { InlangConfig } from "@inlang/config"
-import type { NodeishFilesystem } from "@inlang-git/fs"
+import type { NodeishFilesystem } from "@lix-js/fs"
 
 // export async function tryAutoGenProjectConfig(args: { fs; sourceLanguagetag; languageTags }): any {
 // 	// Maybe<ProjectConfigFile>

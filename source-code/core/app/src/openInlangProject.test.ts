@@ -470,7 +470,7 @@ describe("functionality", () => {
 
 			expect(inlang.query.lintReports.getAll()).toHaveLength(1)
 
-			expect(inlang.query.lintReports.getAll()[0]?.ruleId).toBe(enabledLintRule.meta.id)
+			expect(inlang.query.lintReports.getAll()![0]?.ruleId).toBe(enabledLintRule.meta.id)
 			expect(
 				inlang.installed.lintRules().find((rule) => rule.meta.id === disabledLintRule.meta.id)
 					?.disabled,
@@ -534,7 +534,7 @@ describe("functionality", () => {
 			await new Promise((resolve) => setTimeout(resolve, 510))
 
 			expect(inlang.query.lintReports.getAll()).toHaveLength(1)
-			expect(inlang.query.lintReports.getAll()[0]?.ruleId).toBe(_mockLintRule.meta.id)
+			expect(inlang.query.lintReports.getAll()![0]?.ruleId).toBe(_mockLintRule.meta.id)
 			expect(inlang.installed.lintRules()).toHaveLength(1)
 			expect(inlang.installed.lintRules()[0]?.disabled).toBe(false)
 		})
