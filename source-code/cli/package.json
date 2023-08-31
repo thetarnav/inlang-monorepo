@@ -55,6 +55,8 @@
 	"devDependencies": {
 		"isomorphic-git": "1.24.5",
 		"@inlang/app": "*",
+		"@inlang/create-project": "*",
+		"@inlang/language-tag": "*",
 		"@inlang/package": "*",
 		"@inlang/rpc": "*",
 		"@sentry/node": "^7.64.0",
