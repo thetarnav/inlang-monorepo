@@ -20,7 +20,7 @@ export async function createProjectConfig(args: {
 	}
 
 	await args.nodeishFs.writeFile(
-		args.filePath || "./project.inlang.test.json",
+		args.filePath || "./project.inlang.json",
 		JSON.stringify(newConfig, undefined, 4) + "\n",
 	)
 }
