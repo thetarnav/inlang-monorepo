@@ -23,3 +23,7 @@ console.log(m.helloWorld()) // "Hello World"
 1. Paraglide compiles the inlang project into tree-shakable JavaScript modules and message functions.
 2. `setCurrentLanguageTag()` lazy imports the messages for the given language tag.
 3. `import * as m` enables bundlers to tree shake the messages. 
+
+## Notes
+
+- Both direct module imports `m.*` and `m()` seem to work with sveltekit. `m()` is preferrable to align with other libraries and allow arbitrary identifiers patterns. 
