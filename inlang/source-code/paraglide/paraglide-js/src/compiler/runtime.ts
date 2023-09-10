@@ -1,37 +1,33 @@
-import type { LanguageTag, Variant } from "@inlang/sdk"
+import type { LanguageTag } from "@inlang/sdk"
 
-let selectors: Variant["match"] = {}
+export const sourceLanguageTag = "en"
 
-let languageTag: LanguageTag
+let _currentLanguageTag: LanguageTag = sourceLanguageTag
 
-export const getLanguageTag = (): LanguageTag => {
-	return languageTag
+export const currentLanguageTag = (): LanguageTag => {
+	return _currentLanguageTag
 }
 
-export const setLanguageTag = (tag: LanguageTag) => {
-	languageTag = tag
-}
-
-export const getSelectors = (): Variant["match"] => {
-	return selectors
-}
-
-export const setSelectors = (newSelectors: Variant["match"]) => {
-	selectors = newSelectors
+export const setCurrentLanguageTag = (tag: LanguageTag) => {
+	_currentLanguageTag = tag
 }
 
 /**
  * Lookup function for a message.
  */
 export const m = (id: keyof (typeof messages)["en"], params: Record<string, any>): string => {
-	if (languageTag === undefined) throw new Error("Language tag is not set.")
-	// @ts-expect-error - params is not typed
-	return messages[id](params)
+	if (_currentLanguageTag === undefined) throw new Error("Language tag is not set.")
+	// @ts-ignore
+	if (messages[_currentLanguageTag]?.[id] === undefined) {
+		return id
+	}
+	// @ts-ignore
+	return messages[sourceLanguageTag][id](params)
 }
 
 const messages = {
 	en: {
-		simple: () => "Login",
+		onlyText: () => "Login",
 		oneParam: (params: { name: string }) => `Hello ${params.name}!`,
 		multipleParams: (params: { name: string; count: number }) =>
 			`Hello ${params.name}! You have ${params.count} messages.`,
