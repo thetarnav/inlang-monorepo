@@ -8,17 +8,19 @@ export const onlyText = () => ({
 	de: "Nur Text",
 })
 
-export const oneParam = (params: { name: string }) => ({
+export const oneParam = /** @param {{ name: string }} params */ (params) => ({
 	en: `Hello ${params.name}!`,
 	de: `Hallo ${params.name}!`,
 })
 
-export const multipleParams = (params: { name: string; count: number }) => ({
+export const multipleParams = /** @param {{ name: string, count: string }} params */ (params) => ({
 	en: `Hello ${params.name}! You have ${params.count} messages.`,
 	de: `Hallo ${params.name}! Du hast ${params.count} Nachrichten.`,
 })
 
-export const withMultipleVariants = (params: { name: string; count: number }) => ({
+export const withMultipleVariants = /** @param {{ name: string, count: string }} params */ (
+	params,
+) => ({
 	selectorOrdering: ["gender", "guestOther"],
 	en: [
 		{
