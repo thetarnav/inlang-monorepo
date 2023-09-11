@@ -20,7 +20,7 @@ it("should compile a pattern with multiple VariableReference's", () => {
 	]
 	const compiled = compilePattern(pattern)
 	expect(compiled).toBe(
-		"/** @param {{ name: string | number, count: string | number }} params */(params) => `Hello ${params.name}! You have ${params.count} messages.`",
+		"/** @param {{ name: NonNullable<unknown>, count: NonNullable<unknown> }} params */(params) => `Hello ${params.name}! You have ${params.count} messages.`",
 	)
 	expect(eval(compiled)({ name: "John", count: 5 })).toBe("Hello John! You have 5 messages.")
 })
@@ -64,8 +64,8 @@ it("should emit typesafe params", async () => {
     // @ts-expect-error - missing params
     message()
 
-    // @ts-expect-error - wrong param type
-    message({ name: 5, count: new Date() })
+		// @ts-expect-error - missing one param
+    message({ name: "John" })
   `,
 	)
 

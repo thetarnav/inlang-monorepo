@@ -5,7 +5,7 @@ export const compilePattern = (pattern: Pattern): string => {
 	// parameter names and TypeScript types
 	// only allowing types that JS transpiles to strings under the hood like string and number.
 	// the pattern nodes must be extended to hold type information in the future.
-	const params: Array<{ name: Expression["name"]; type: "string | number" }> = []
+	const params: Array<{ name: Expression["name"]; type: "NonNullable<unknown>" }> = []
 	for (const element of pattern) {
 		switch (element.type) {
 			case "Text":
@@ -13,7 +13,7 @@ export const compilePattern = (pattern: Pattern): string => {
 				break
 			case "VariableReference":
 				result += "${params." + element.name + "}"
-				params.push({ name: element.name, type: "string | number" })
+				params.push({ name: element.name, type: "NonNullable<unknown>" })
 				break
 			default:
 				throw new Error("Unknown pattern element type: " + element)
