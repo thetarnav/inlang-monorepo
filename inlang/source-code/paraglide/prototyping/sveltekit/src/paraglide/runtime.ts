@@ -1,19 +1,21 @@
 import type { LanguageTag } from "@inlang/sdk"
 import * as messages from "./messages"
+import { derived, writable } from "svelte/store"
 
 export const sourceLanguageTag = "en"
 
-let _currentLanguageTag: LanguageTag = sourceLanguageTag
+const _currentLanguageTag = writable<LanguageTag>(sourceLanguageTag)
 
-export const currentLanguageTag = (): LanguageTag => {
-	return _currentLanguageTag
+export const currentLanguageTag = derived(_currentLanguageTag, ($tag) => $tag)
+
+export const setCurrentLanguageTag = async (tag: LanguageTag) => {
+	_currentLanguageTag.set(tag)
 }
 
-export const setCurrentLanguageTag = async (tag: LanguageTag): Promise<void> => {
-	_currentLanguageTag = tag
-}
-
-export const m = (id: string, params?: Record<string, any>) => {
-	// @ts-ignore
-	return messages[id](params)
-}
+export const m = derived(currentLanguageTag, ($tag) => {
+	return (id: string, params?: Record<string, any>) => {
+		// @ts-ignore
+		const res = messages[id](params)[$tag]
+		return res
+	}
+})
