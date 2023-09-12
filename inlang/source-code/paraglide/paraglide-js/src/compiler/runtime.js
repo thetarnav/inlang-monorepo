@@ -24,17 +24,12 @@ export const setCurrentLanguageTag = async (tag) => {
 }
 
 /**
- * Lookup function for a message.
  *
- * @param {keyof typeof messages} id
- * @param {Record<string, any>} params
- * @returns {string}
+ * @param {string} id
  */
-export const m = (id, params) => {
-	if (_currentLanguageTag === undefined) throw new Error("Language tag is not set.")
-	if (messages[id] === undefined) {
-		return id
-	}
+/*#__NO_SIDE_EFFECTS__*/
+export const m = (id) => {
+	/*#__PURE__*/
 	// @ts-ignore
-	return messages[id](params)?.[_currentLanguageTag] ?? id
+	return messages[id]
 }

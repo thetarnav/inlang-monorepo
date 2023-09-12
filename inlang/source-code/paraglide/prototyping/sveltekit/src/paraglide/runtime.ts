@@ -13,6 +13,9 @@ export const setCurrentLanguageTag = async (tag: LanguageTag) => {
 }
 
 export const m = derived(currentLanguageTag, ($tag) => {
+
+	messages.multipleParams({ count: 5, name: "John" })
+
 	return (id: string, params?: Record<string, any>) => {
 		// @ts-ignore
 		const res = messages[id](params)[$tag]
