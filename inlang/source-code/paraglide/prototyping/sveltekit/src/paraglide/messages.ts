@@ -1,9 +1,16 @@
-export const onlyText = () => {
-	return {
-		en: "Only text",
-		de: "Nur Text",
+import { derived } from "svelte/store"
+import { currentLanguageTag } from "./runtime"
+
+export const onlyText = derived(currentLanguageTag, ($tag) => {
+	return () => {
+		const variants = {
+			en: "Only text",
+			de: "Nur Text",
+		}
+		// @ts-ignore
+		return variants[$tag]
 	}
-}
+})
 
 export const oneParam = (params: { name: string }) => {
 	return {

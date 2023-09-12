@@ -1,5 +1,4 @@
 import type { LanguageTag } from "@inlang/sdk"
-import * as messages from "./messages"
 import { derived, writable } from "svelte/store"
 
 export const sourceLanguageTag = "en"
@@ -12,13 +11,10 @@ export const setCurrentLanguageTag = async (tag: LanguageTag) => {
 	_currentLanguageTag.set(tag)
 }
 
-export const m = derived(currentLanguageTag, ($tag) => {
-
-	messages.multipleParams({ count: 5, name: "John" })
-
-	return (id: string, params?: Record<string, any>) => {
-		// @ts-ignore
-		const res = messages[id](params)[$tag]
-		return res
-	}
-})
+// export const m = derived(currentLanguageTag, ($tag) => {
+// 	return (id: string, params?: Record<string, any>) => {
+// 		// @ts-ignore
+// 		const res = messages[id](params)[$tag]
+// 		return res
+// 	}
+// })
