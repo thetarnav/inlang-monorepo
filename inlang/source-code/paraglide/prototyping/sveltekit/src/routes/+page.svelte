@@ -1,6 +1,6 @@
 <script lang="ts">
   import { setCurrentLanguageTag } from "../paraglide/runtime";
-  import { onlyText } from "../paraglide/messages"
+  import { onlyText} from "../paraglide/messages"
 </script>
 
 <p>{$onlyText()}</p>
