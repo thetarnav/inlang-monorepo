@@ -1,9 +1,9 @@
 <script lang="ts">
   import { setCurrentLanguageTag } from "../paraglide/runtime";
-  import { onlyText} from "../paraglide/messages"
+  import * as m from "../paraglide/messages"
 </script>
 
-<p>{$onlyText()}</p>
+<p>{$m.multipleParams({name: "Samuel", count: 5})}</p>
 
 <!-- <p>{m.multipleParams({name: "Samuel", count: 5})}</p> -->
 

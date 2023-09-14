@@ -1,41 +1,33 @@
 import type { LanguageTag } from "@inlang/sdk"
+import { derived, writable } from "svelte/store"
+import * as en from "./resources/en"
 
 export const sourceLanguageTag = "en"
 
-let _currentLanguageTag: LanguageTag = sourceLanguageTag
+const _currentLanguageTag = writable<LanguageTag>(sourceLanguageTag)
 
 // the ids of the messages that have been rendered to the user
 // and should be imported once the user switches to another language
 const _renderedMessageIds: string[] = []
 
-let _importedInitialMessages = false
+// const _importedInitialMessages = false
 
 const messages: any = {}
 
-export const currentLanguageTag = (): LanguageTag => {
-	return _currentLanguageTag
-}
+export const currentLanguageTag = derived(_currentLanguageTag, ($tag) => (): LanguageTag => {
+	return $tag
+})
 
 export const setCurrentLanguageTag = async (tag: LanguageTag): Promise<void> => {
-	if (_importedInitialMessages === false) {
-		console.log("initial load")
-		const module = await import(`./resources/${tag}.ts`)
-		messages[tag] = module
-		_importedInitialMessages = true
-	} else {
-		console.log("re-load")
-		messages[tag] = {}
-		// import messages that have been rendered to the user
-		// and should be imported once the user switches to another language
-		for (const id of _renderedMessageIds) {
-			const module = await import(`./resources/${tag}/${id}.ts`)
-			messages[tag][id] = module.default
-		}
-	}
-	_currentLanguageTag = tag
+	// const module = await import(`./resources/${tag}.ts`)
+	// messages[tag] = module
+	_currentLanguageTag.set(tag)
 }
 
-export const m = (id: string, params?: Record<string, any>) => {
-	_renderedMessageIds.push(id)
-	return messages[_currentLanguageTag][id](params)
-}
+export const m = derived(
+	_currentLanguageTag,
+	($tag) => (id: string, params?: Record<string, any>) => {
+		_renderedMessageIds.push(id)
+		return en["multipleParams"](params)
+	},
+)

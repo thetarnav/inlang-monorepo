@@ -1,15 +1,22 @@
 <script lang="ts">
   import { setCurrentLanguageTag, m } from "./paraglide/runtime";
+  import Manual from "./Manual.svelte";
 </script>
 
 {#await setCurrentLanguageTag("en")}
   <p>Loading languages...</p>
 {:then _} 
-  <p>{m("multipleParams", {name: "Samuel", count: 5})}</p>
+  <p>{$m("multipleParams", {name: "Samuel", count: 5})}</p>
 {/await}
+
 
 <button on:click={async () => {
   await setCurrentLanguageTag("de");
   console.log("language tag changed");
-  console.log(m("multipleParams", { name: "Samuel", count: 5 }))
+  console.log($m("multipleParams", { name: "Samuel", count: 5 }))
 }}>change language tag</button>
+
+
+<div>----</div>
+
+<Manual></Manual>

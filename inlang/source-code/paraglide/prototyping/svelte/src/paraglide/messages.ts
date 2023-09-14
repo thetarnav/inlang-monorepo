@@ -9,7 +9,7 @@ export const multipleParams = (params: { name: string; count: number }) => {
 	return multipleParamsStore[currentLanguageTag()](params)
 }
 
-const store = {}
+const multipleParamsStore = {}
 export const _setMultipleParams = (tag: string, fn: any) => {
 	// @ts-expect-error - any blabla
 	multipleParamsStore[tag] = fn

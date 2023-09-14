@@ -19,12 +19,17 @@ export const oneParam = (params: { name: string }) => {
 	}
 }
 
-export const multipleParams = (params: { name: string; count: number }) => {
-	return {
-		en: `Hello ${params.name}! You have ${params.count} Messages.`,
-		de: `Hallo ${params.name}! Du hast ${params.count} Nachrichten.`,
+export const multipleParams = derived(currentLanguageTag, ($tag) => {
+	return (params: { name: string; count: number }) => {
+		const variants = {
+			en: `Hello ${params.name}! You have ${params.count} Messages.`,
+			de: `Hallo ${params.name}! Du hast ${params.count} Nachrichten.`,
+			fr: `Bonjour ${params.name}! Vous avez ${params.count} messages.`,
+		}
+		// @ts-ignore
+		return variants[$tag]
 	}
-}
+})
 
 /**
  * Verifying that code-splitting works
