@@ -2,10 +2,22 @@ export const onlyText = () => "Only text"
 
 export const oneParam = (params: { name: string }) => `Hello ${params.name}!`
 
-/*@__PURE__*/
-export const multipleParams = (params: { name: string; count: number }) =>
+const multipleParams_en = (params: { name: string; count: number }) =>
 	`Hello ${params.name}! You have ${params.count} Messages.`
 
+const multipleParams_de = (params: { name: string; count: number }) =>
+	`Hallo ${params.name}! Du hast ${params.count} Nachrichten.`
+
+export const multipleParams = (languageTag: string) => {
+	switch (languageTag) {
+		case "en":
+			return multipleParams_en
+		case "de":
+			return multipleParams_de
+		default:
+			return `Unknown language tag ${languageTag}`
+	}
+}
 /**
  * Verifying that code-splitting works
  */

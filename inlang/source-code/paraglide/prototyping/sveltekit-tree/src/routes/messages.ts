@@ -1,10 +1,26 @@
-export const onlyText = () => "Only text"
+import { derived } from "svelte/store"
+import { currentLanguageTag } from "./function/runtime"
 
-export const oneParam = (params: { name: string }) => `Hello ${params.name}!`
+export const onlyText = () => "Nur text"
 
-/*@__PURE__*/
-export const multipleParams = (params: { name: string; count: number }) =>
+export const oneParam = (params: { name: string }) => `Hallo ${params.name}!`
+
+const multipleParams_en = (params: { name: string; count: number }) =>
 	`Hello ${params.name}! You have ${params.count} Messages.`
+
+const multipleParams_de = (params: { name: string; count: number }) =>
+	`Hallo ${params.name}! Du hast ${params.count} Nachrichten.`
+
+export const multipleParams = derived(currentLanguageTag, ($tag) => {
+	switch ($tag) {
+		case "en":
+			return multipleParams_en
+		case "de":
+			return multipleParams_de
+		default:
+			return `Unknown language tag ${$tag}`
+	}
+})
 
 /**
  * Verifying that code-splitting works

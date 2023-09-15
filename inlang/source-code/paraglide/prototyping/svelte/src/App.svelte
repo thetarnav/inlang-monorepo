@@ -1,6 +1,5 @@
 <script lang="ts">
   import { setCurrentLanguageTag, m } from "./paraglide/runtime";
-  import Manual from "./Manual.svelte";
 </script>
 
 {#await setCurrentLanguageTag("en")}
@@ -17,6 +16,4 @@
 }}>change language tag</button>
 
 
-<div>----</div>
-
-<Manual></Manual>
+<!-- <Manual></Manual> -->

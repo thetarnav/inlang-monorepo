@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { setCurrentLanguageTag } from "../paraglide/runtime";
-  import * as m from "../paraglide/messages"
+  import { setCurrentLanguageTag } from "./runtime";
+  import { multipleParams} from "../paraglide/messages"
 </script>
 
-<p>{$m.multipleParams({name: "Samuel", count: 5})}</p>
+<p>{$multipleParams({name: "Samuel", count: 5})}</p>
 
 <!-- <p>{m.multipleParams({name: "Samuel", count: 5})}</p> -->
 

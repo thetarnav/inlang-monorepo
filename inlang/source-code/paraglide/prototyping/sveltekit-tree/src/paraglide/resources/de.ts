@@ -1,10 +1,9 @@
-export const onlyText = () => "Only text"
+export const onlyText = () => "Nur text"
 
-export const oneParam = (params: { name: string }) => `Hello ${params.name}!`
+export const oneParam = (params: { name: string }) => `Hallo ${params.name}!`
 
-/*@__PURE__*/
 export const multipleParams = (params: { name: string; count: number }) =>
-	`Hello ${params.name}! You have ${params.count} Messages.`
+	`Hallo ${params.name}! Du hast ${params.count} Nachrichten.`
 
 /**
  * Verifying that code-splitting works

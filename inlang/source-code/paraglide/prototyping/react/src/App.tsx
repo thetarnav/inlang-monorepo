@@ -34,6 +34,8 @@ function App() {
 function Component() {
 	console.log("rendering component 1")
 	const { setLanguageTag } = useContext(Paraglide)
+
+	const id = "Button"
 	return (
 		<>
 			{/* <p>{languageTag}</p> */}
@@ -45,6 +47,7 @@ function Component() {
 				Change language tag
 			</button>
 			<p>{m.loginButton()}</p>
+			<p>{m[`login${id}`]()}</p>
 		</>
 	)
 }
@@ -54,7 +57,6 @@ function Component2() {
 
 	return (
 		<>
-			<p>hello from 2</p>
 			<p>{m.loginButton()}</p>
 		</>
 	)

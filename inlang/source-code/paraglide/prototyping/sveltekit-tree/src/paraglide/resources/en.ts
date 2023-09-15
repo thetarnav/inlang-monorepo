@@ -2,7 +2,6 @@ export const onlyText = () => "Only text"
 
 export const oneParam = (params: { name: string }) => `Hello ${params.name}!`
 
-/*@__PURE__*/
 export const multipleParams = (params: { name: string; count: number }) =>
 	`Hello ${params.name}! You have ${params.count} Messages.`
 
