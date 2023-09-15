@@ -27,3 +27,5 @@ console.log(m.helloWorld()) // "Hello World"
 ## Notes
 
 - Both direct module imports `m.*` and `m()` seem to work with sveltekit. `m()` is preferrable to align with other libraries and allow arbitrary identifiers patterns. 
+
+- wrapping a message in something like `derived(() => m.helloWorld())` disables tree-shaking.
