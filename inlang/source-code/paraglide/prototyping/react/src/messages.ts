@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useContext } from "react"
-import { Paraglide } from "./App"
+import { useParaglide } from "./runtime"
 
 export const loginButton = () => {
-	const { languageTag } = useContext(Paraglide)
+	const { languageTag } = useParaglide()
 	switch (languageTag) {
 		case "en":
 			return "Login today!"
@@ -15,7 +14,7 @@ export const loginButton = () => {
 }
 
 export const goodBye = () => {
-	const { languageTag } = useContext(Paraglide)
+	const { languageTag } = useParaglide()
 	switch (languageTag) {
 		case "en":
 			return "Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!Login today!"

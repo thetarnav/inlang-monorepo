@@ -1,23 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { createContext, useContext, useState } from "react"
 import * as m from "./messages"
-
-const useParaglideState = () => {
-	const [languageTag, setLanguageTag] = useState("en")
-	return { languageTag, setLanguageTag }
-}
-
-export const Paraglide = createContext(
-	{} as {
-		languageTag: string
-		setLanguageTag: (tag: string) => void
-	},
-)
-
-export const setCurrentLanguageTag = (tag: string) => {
-	const ctx = useContext(Paraglide)
-	ctx.setLanguageTag(tag)
-}
+import { Paraglide, useParaglide, useParaglideState } from "./runtime"
 
 function App() {
 	console.log("rendering app")
@@ -33,9 +16,8 @@ function App() {
 
 function Component() {
 	console.log("rendering component 1")
-	const { setLanguageTag } = useContext(Paraglide)
+	const { setLanguageTag } = useParaglide()
 
-	const id = "Button"
 	return (
 		<>
 			{/* <p>{languageTag}</p> */}
@@ -47,7 +29,6 @@ function Component() {
 				Change language tag
 			</button>
 			<p>{m.loginButton()}</p>
-			<p>{m[`login${id}`]()}</p>
 		</>
 	)
 }
