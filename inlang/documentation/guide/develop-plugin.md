@@ -36,7 +36,7 @@ import { id, displayName, description } from "../marketplace-manifest.json"
 
 export const plugin: Plugin<PluginSettings> = {
 	meta: {
-		id: id as Plugin["meta"]["id"],
+		id: id as Plugin["id"],
 		displayName,
 		description,
 	},
@@ -64,6 +64,7 @@ In your lint rule's `marketplace-manifest.json` make sure to define the followin
 |----------------------|---------------------------------------------------------------|
 | `id`                 | Unique identifier for your plugin.                         |
 | `icon`        | Link to the icon of your plugin (optional).              |
+| `coverImage`        | Optional cover image acting as preview of your plugin.              |
 | `displayName`        | A user-friendly display name for your plugin.              |
 | `description`        | Briefly describe what your plugin does.              |
 | `readme`             | Link to the README documentation for your plugin.          |

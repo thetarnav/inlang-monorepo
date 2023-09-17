@@ -1,7 +1,7 @@
 import type { Plugin } from "@inlang/plugin"
 
 type PluginErrorOptions = {
-	plugin: Plugin["meta"]["id"]
+	plugin: Plugin["id"]
 } & Partial<Error>
 
 class PluginError extends Error {
@@ -53,5 +53,13 @@ export class PluginReturnedInvalidCustomApiError extends PluginError {
 	constructor(message: string, options: PluginErrorOptions) {
 		super(message, options)
 		this.name = "PluginReturnedInvalidCustomApiError"
+	}
+}
+
+export class PluginsDoNotProvideLoadOrSaveMessagesError extends PluginError {
+	constructor(message: string, options: PluginErrorOptions) {
+		super(message, options)
+		this.name = "PluginsDoNotProvideLoadOrSaveMessagesError"
+		options.plugin = "plugin.inlang.missing"
 	}
 }

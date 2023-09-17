@@ -36,7 +36,7 @@ import { id, displayName, description } from "../marketplace-manifest.json";
 
 export const yourLintRule: MessageLintRule = {
   meta: {
-    id: id as MessageLintRule["meta"]["id"],
+    id: id as MessageLintRule["id"],
     displayName,
     description,
   },
@@ -59,6 +59,7 @@ In your lint rule's `marketplace-manifest.json` make sure to define the followin
 |----------------------|---------------------------------------------------------------|
 | `id`                 | Unique identifier for your lint rule.                         |
 | `icon`        | Link to the icon of your lint rule (optional).              |
+| `coverImage`        | Optional cover image acting as preview of your lint rule.              |
 | `displayName`        | A user-friendly display name for your lint rule.              |
 | `description`        | Briefly describe what your lint rule checks for.              |
 | `readme`             | Link to the README documentation for your lint rule.          |

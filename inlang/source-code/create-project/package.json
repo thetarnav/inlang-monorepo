@@ -1,7 +1,7 @@
 {
 	"name": "@inlang/create-project",
 	"type": "module",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -22,7 +22,8 @@
 	},
 	"dependencies": {
 		"@inlang/plugin": "*",
-		"@inlang/project-config": "*",
+		"@inlang/sdk": "*",
+		"@inlang/project-settings": "*",
 		"@lix-js/fs": "*",
 		"@sinclair/typebox": "0.31.14",
 		"terser": "5.19.4"

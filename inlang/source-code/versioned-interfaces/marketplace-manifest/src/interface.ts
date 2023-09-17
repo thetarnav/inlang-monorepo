@@ -1,6 +1,6 @@
 import { Type, type Static } from "@sinclair/typebox"
 import { Translatable } from "@inlang/translatable"
-import { ProjectConfig } from "@inlang/project-config"
+import { ProjectSettings } from "@inlang/project-settings"
 
 /**
  *
@@ -10,6 +10,9 @@ import { ProjectConfig } from "@inlang/project-config"
 const MarketplaceManifestBase = Type.Object({
 	$schema: Type.Optional(Type.Literal("https://inlang.com/schema/marketplace-manifest")),
 	icon: Type.Optional(Type.String()),
+	coverImage: Type.Optional(
+		Type.String({ description: "The cover displayed in the marketplace." }),
+	),
 	displayName: Translatable(
 		Type.String({ description: "The name which is displayed in the marketplace." }),
 	),
@@ -35,7 +38,7 @@ const MarketplaceManifestBase = Type.Object({
 const ModuleBase = Type.Intersect([
 	MarketplaceManifestBase,
 	Type.Object({
-		module: ProjectConfig["properties"]["modules"]["items"],
+		module: ProjectSettings["allOf"][0]["properties"]["modules"]["items"],
 	}),
 ])
 

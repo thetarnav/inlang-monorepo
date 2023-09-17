@@ -5,6 +5,7 @@ import {
 	PluginReturnedInvalidCustomApiError,
 	PluginLoadMessagesFunctionAlreadyDefinedError,
 	PluginSaveMessagesFunctionAlreadyDefinedError,
+	PluginsDoNotProvideLoadOrSaveMessagesError,
 	PluginHasInvalidIdError,
 	PluginHasInvalidSchemaError,
 	PluginUsesReservedNamespaceError,
@@ -40,23 +41,23 @@ export const resolvePlugins: ResolvePluginsFunction = async (args) => {
 		 */
 
 		// -- INVALID ID in META --
-		const hasInvalidId = errors.some((error) => error.path === "/meta/id")
+		const hasInvalidId = errors.some((error) => error.path === "/id")
 		if (hasInvalidId) {
 			result.errors.push(
 				new PluginHasInvalidIdError(
-					`Plugin ${plugin.meta.id} has an invalid id "${plugin.meta.id}". It must be kebap-case and contain a namespace like project.my-plugin.`,
-					{ plugin: plugin.meta.id },
+					`Plugin ${plugin.id} has an invalid id "${plugin.id}". It must be kebap-case and contain a namespace like project.my-plugin.`,
+					{ plugin: plugin.id },
 				),
 			)
 		}
 
 		// -- USES RESERVED NAMESPACE --
-		if (plugin.meta.id.includes("inlang") && !whitelistedPlugins.includes(plugin.meta.id)) {
+		if (plugin.id.includes("inlang") && !whitelistedPlugins.includes(plugin.id)) {
 			result.errors.push(
 				new PluginUsesReservedNamespaceError(
-					`Plugin ${plugin.meta.id} uses reserved namespace 'inlang'.`,
+					`Plugin ${plugin.id} uses reserved namespace 'inlang'.`,
 					{
-						plugin: plugin.meta.id,
+						plugin: plugin.id,
 					},
 				),
 			)
@@ -66,9 +67,9 @@ export const resolvePlugins: ResolvePluginsFunction = async (args) => {
 		if (errors.length > 0) {
 			result.errors.push(
 				new PluginHasInvalidSchemaError(
-					`Plugin ${plugin.meta.id} uses an invalid schema. Please check the documentation for the correct Plugin type.`,
+					`Plugin ${plugin.id} uses an invalid schema. Please check the documentation for the correct Plugin type.`,
 					{
-						plugin: plugin.meta.id,
+						plugin: plugin.id,
 						cause: errors,
 					},
 				),
@@ -79,8 +80,8 @@ export const resolvePlugins: ResolvePluginsFunction = async (args) => {
 		if (typeof plugin.loadMessages === "function" && result.data.loadMessages !== undefined) {
 			result.errors.push(
 				new PluginLoadMessagesFunctionAlreadyDefinedError(
-					`Plugin ${plugin.meta.id} defines the loadMessages function, but it was already defined by another plugin.`,
-					{ plugin: plugin.meta.id },
+					`Plugin ${plugin.id} defines the loadMessages function, but it was already defined by another plugin.`,
+					{ plugin: plugin.id },
 				),
 			)
 		}
@@ -88,8 +89,8 @@ export const resolvePlugins: ResolvePluginsFunction = async (args) => {
 		if (typeof plugin.saveMessages === "function" && result.data.saveMessages !== undefined) {
 			result.errors.push(
 				new PluginSaveMessagesFunctionAlreadyDefinedError(
-					`Plugin ${plugin.meta.id} defines the saveMessages function, but it was already defined by another plugin.`,
-					{ plugin: plugin.meta.id },
+					`Plugin ${plugin.id} defines the saveMessages function, but it was already defined by another plugin.`,
+					{ plugin: plugin.id },
 				),
 			)
 		}
@@ -99,7 +100,7 @@ export const resolvePlugins: ResolvePluginsFunction = async (args) => {
 			// TODO: why do we call this function 2 times (here for validation and later for retrieving the actual value)?
 			const { data: customApi, error } = tryCatch(() =>
 				plugin.addCustomApi!({
-					settings: args.settings?.[plugin.meta.id] ?? {},
+					settings: args.settings?.[plugin.id] ?? {},
 				}),
 			)
 			if (error) {
@@ -110,8 +111,8 @@ export const resolvePlugins: ResolvePluginsFunction = async (args) => {
 			if (typeof customApi !== "object") {
 				result.errors.push(
 					new PluginReturnedInvalidCustomApiError(
-						`Plugin ${plugin.meta.id} defines the addCustomApi function, but it does not return an object.`,
-						{ plugin: plugin.meta.id, cause: error },
+						`Plugin ${plugin.id} defines the addCustomApi function, but it does not return an object.`,
+						{ plugin: plugin.id, cause: error },
 					),
 				)
 			}
@@ -130,7 +131,7 @@ export const resolvePlugins: ResolvePluginsFunction = async (args) => {
 			result.data.loadMessages = (_args) =>
 				plugin.loadMessages!({
 					..._args,
-					settings: args.settings?.[plugin.meta.id] ?? {},
+					settings: args.settings?.[plugin.id] ?? {},
 					nodeishFs: args.nodeishFs,
 				})
 		}
@@ -139,14 +140,14 @@ export const resolvePlugins: ResolvePluginsFunction = async (args) => {
 			result.data.saveMessages = (_args) =>
 				plugin.saveMessages!({
 					..._args,
-					settings: args.settings?.[plugin.meta.id] ?? {},
+					settings: args.settings?.[plugin.id] ?? {},
 					nodeishFs: args.nodeishFs,
 				})
 		}
 
 		if (typeof plugin.detectedLanguageTags === "function") {
 			const detectedLangugeTags = await plugin.detectedLanguageTags!({
-				settings: args.settings?.[plugin.meta.id] ?? {},
+				settings: args.settings?.[plugin.id] ?? {},
 				nodeishFs: args.nodeishFs,
 			})
 			result.data.detectedLanguageTags = [
@@ -157,13 +158,26 @@ export const resolvePlugins: ResolvePluginsFunction = async (args) => {
 		if (typeof plugin.addCustomApi === "function") {
 			const { data: customApi } = tryCatch(() =>
 				plugin.addCustomApi!({
-					settings: args.settings?.[plugin.meta.id] ?? {},
+					settings: args.settings?.[plugin.id] ?? {},
 				}),
 			)
 			if (customApi) {
 				result.data.customApi = deepmerge(result.data.customApi, customApi)
 			}
 		}
+	}
+
+	// --- LOADMESSAGE / SAVEMESSAGE NOT DEFINED ---
+	if (
+		typeof result.data.loadMessages !== "function" ||
+		typeof result.data.saveMessages !== "function"
+	) {
+		result.errors.push(
+			new PluginsDoNotProvideLoadOrSaveMessagesError(
+				"It seems you did not install any plugin that handles messages. Please add one to make inlang work. See https://inlang.com/documentation/plugins/registry.",
+				{ plugin: "plugin.inlang.missing" },
+			),
+		)
 	}
 
 	return result
