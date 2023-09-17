@@ -1,35 +1,30 @@
-import { derived } from "svelte/store"
-import { currentLanguageTag } from "./runtime"
-
-export const onlyText = derived(currentLanguageTag, ($tag) => {
-	return () => {
-		const variants = {
-			en: "Only text",
-			de: "Nur Text",
-		}
-		// @ts-ignore
-		return variants[$tag]
+export const onlyText = (tag: string) => {
+	const variants = {
+		en: "Only text",
+		de: "Nur Text",
 	}
-})
+	// @ts-ignore
+	return variants[tag]
+}
 
-export const oneParam = (params: { name: string }) => {
-	return {
+export const oneParam = (tag: string, params: { name: string }) => {
+	const variants = {
 		en: `Hello ${params.name}!`,
 		de: `Hallo ${params.name}!`,
 	}
+	// @ts-ignore
+	return variants[tag]
 }
 
-export const multipleParams = derived(currentLanguageTag, ($tag) => {
-	return (params: { name: string; count: number }) => {
-		const variants = {
-			en: `Hello ${params.name}! You have ${params.count} Messages.`,
-			de: `Hallo ${params.name}! Du hast ${params.count} Nachrichten.`,
-			fr: `Bonjour ${params.name}! Vous avez ${params.count} messages.`,
-		}
-		// @ts-ignore
-		return variants[$tag]
+export const multipleParams = (tag: string, params: { name: string; count: number }) => {
+	const variants = {
+		en: `Hello ${params.name}! You have ${params.count} Messages.`,
+		de: `Hallo ${params.name}! Du hast ${params.count} Nachrichten.`,
+		fr: `Bonjour ${params.name}! Vous avez ${params.count} messages.`,
 	}
-})
+	// @ts-ignore
+	return variants[tag]
+}
 
 /**
  * Verifying that code-splitting works
