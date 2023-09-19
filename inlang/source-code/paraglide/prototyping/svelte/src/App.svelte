@@ -1,19 +1,18 @@
 <script lang="ts">
-  import { setCurrentLanguageTag, m } from "./paraglide/runtime";
+  import { setCurrentLanguageTag } from "./paraglide/runtime";
+  import { m} from "./paraglide/runtime"
 </script>
 
-{#await setCurrentLanguageTag("en")}
-  <p>Loading languages...</p>
-{:then _} 
-  <p>{$m("multipleParams", {name: "Samuel", count: 5})}</p>
-{/await}
+
+<p>{$m("onlyText", {})}</p>
+<p>{$m("multipleParams", { name: "Samuel", count: 5})}</p>
 
 
 <button on:click={async () => {
-  await setCurrentLanguageTag("de");
+  setCurrentLanguageTag("de");
   console.log("language tag changed");
-  console.log($m("multipleParams", { name: "Samuel", count: 5 }))
-}}>change language tag</button>
+  // console.log($m("multipleParams", { name: "Samuel", count: 5 }))
+}}>change language tag to "de"</button>
 
 
 <!-- <Manual></Manual> -->

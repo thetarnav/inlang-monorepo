@@ -1,2 +1,2 @@
 export default (params: { name: string; count: number }) =>
-	`Hello ${params.name}! You have ${params.count} messages.`
+	`Hallo ${params.name}! Du hast ${params.count} Nachrichten.`
