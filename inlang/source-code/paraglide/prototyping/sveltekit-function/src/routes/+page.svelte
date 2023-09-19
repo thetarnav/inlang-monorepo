@@ -2,7 +2,7 @@
   import { m, setCurrentLanguageTag } from "../paraglide/runtime";
 </script>
 
-<p>{$m("multipleParams", {name: "Samuel", count: 5})}</p> 
+<p>{$m("multipleParams", { name: "Samuel", count: 5 })}</p> 
 <p>{$m("onlyText", {})}</p> 
 
 <button on:click={async () => {

@@ -1,5 +1,4 @@
 import { derived, writable, get } from "svelte/store"
-import { browser } from "$app/environment"
 
 export const sourceLanguageTag = "en"
 
@@ -34,20 +33,16 @@ export const m = derived([currentLanguageTag, pendingImports], ([$tag, $pendingP
 	return (id: string, params: Record<string, any>): string => {
 		// message exists
 		if (messages[id]?.[$tag]) {
-			console.log(id, "exists")
 			return messages[id][$tag](params)
 		}
 		// message doesn't exist and hasn't been imported yet
 		else if ($pendingPromises[id] === undefined) {
-			console.log(id, "importing")
 			importMessage(id, $tag)
 		}
 		// message doesn't exist and is being imported, fallback to previous language tag
 		else if (previousLanguageTag && messages[id]?.[previousLanguageTag] !== undefined) {
-			console.log(id, "previous language tag")
 			return messages[id][previousLanguageTag](params)
 		}
-		console.log(id, "fallback")
 		// message doesn't exist at all
 		return id
 	}
