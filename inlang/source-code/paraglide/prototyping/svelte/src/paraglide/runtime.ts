@@ -38,7 +38,7 @@ export const m = derived([currentLanguageTag, pendingImports], ([$tag, $pendingP
 			importMessage(id, $tag)
 		}
 		// message doesn't exist and is being imported, fallback to previous language tag
-		else if (messages[id]?.[previousLanguageTag] !== undefined) {
+		else if (previousLanguageTag && messages[id]?.[previousLanguageTag] !== undefined) {
 			return messages[id][previousLanguageTag](params)
 		}
 		// message doesn't exist at all
