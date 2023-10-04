@@ -11,6 +11,7 @@ export const currentLanguageTag = derived(_currentLanguageTag, ($tag) => {
 })
 
 export const setCurrentLanguageTag = (tag: string): void => {
-	_currentLanguageTag.set(tag)
+	console.log({ _currentLanguageTag, tag })
+	window.location.href = "/en"
 }
 

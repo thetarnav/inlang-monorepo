@@ -1,6 +1,6 @@
 <script>
 
-	import { m } from "../../paraglide/runtime"
+	import { m } from "../../paraglide/runtime/de"
 
 </script>
 

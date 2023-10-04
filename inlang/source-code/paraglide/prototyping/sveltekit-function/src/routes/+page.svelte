@@ -1,5 +1,6 @@
 <script lang="ts">
   import { m, setLanguageTag } from "../paraglide/runtime";
+  import { } from ""
 
   let count = 4
 </script>

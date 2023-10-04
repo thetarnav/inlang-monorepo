@@ -3,9 +3,8 @@ import { currentLanguageTag } from "./runtime"
 import * as de from "./resources/de"
 import * as en from "./resources/en"
 
-export const _derived = derived
 
-export const onlyText: any = _derived(currentLanguageTag, ($tag) => {
+export const onlyText: any = derived(currentLanguageTag, ($tag) => {
 	switch ($tag) {
 		case "en":
 			return en.onlyText
@@ -16,7 +15,7 @@ export const onlyText: any = _derived(currentLanguageTag, ($tag) => {
 	}
 })
 
-export const multipleParams: any = _derived(currentLanguageTag, ($tag) => {
+export const multipleParams: any = derived(currentLanguageTag, ($tag) => {
 	switch ($tag) {
 		case "en":
 			return en.multipleParams
