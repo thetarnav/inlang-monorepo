@@ -1,16 +1,20 @@
-import { derived, writable } from "svelte/store"
-
 export const sourceLanguageTag = "en"
+
+let _currentLanguageTag = sourceLanguageTag
 
 export const languageTags = ["en", "de"] as const
 
-const _currentLanguageTag = writable<string>(sourceLanguageTag)
-
-export const currentLanguageTag = derived(_currentLanguageTag, ($tag) => {
-	return $tag
-})
+export const currentLanguageTag = () => _currentLanguageTag
 
 export const setCurrentLanguageTag = (tag: string): void => {
-	_currentLanguageTag.set(tag)
+	_currentLanguageTag = tag
+	for (const listener of changeListeners) {
+		listener(tag)
+	}
 }
 
+const changeListeners = [] as ((tag: string) => void)[]
+
+export const onSetLanguageTag = (callback: (tag: string) => void): void => {
+	changeListeners.push(callback)
+}
