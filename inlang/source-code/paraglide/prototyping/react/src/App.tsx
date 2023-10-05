@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import * as m from "./messages"
-import { Paraglide, useParaglide, useParaglideState } from "./runtime"
+import * as m from "./paraglide/messages"
+import { Paraglide, useParaglide, useParaglideState } from "./paraglide/runtime"
 
 function App() {
 	console.log("rendering app")

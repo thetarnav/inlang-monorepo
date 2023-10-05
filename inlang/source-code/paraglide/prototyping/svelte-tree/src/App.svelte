@@ -1,25 +1,20 @@
 <script lang="ts">
-  import { currentLanguageTag, onSetLanguageTag, setCurrentLanguageTag } from "./paraglide/runtime";
+  import { languageTag, changeLanguageTag } from "./paraglide/runtime";
   import * as m from "./paraglide/messages"
+  import ParaglideJS from "./Adapter.svelte"
 
-  $: lang = currentLanguageTag();
+  $: name = "Samuel"
 
-  onSetLanguageTag((tag) => {
-    console.log("language tag changed")
-    lang = tag;
-  });
-  
+
 </script>
 
-{#key lang}
-
+<ParaglideJS>
   <p>{m.onlyText()}</p>
-  <p>{m.multipleParams({ name: "Samuel", count: 5})}</p>
-
-
+  <p>{m.multipleParams({ name, count: 5})}</p>
+  <button on:click={() => name = "Felix"}>change name</button>
   <button on:click={async () => {
-    setCurrentLanguageTag("de");
+    changeLanguageTag("de");
     console.log("language tag changed");
   }}>change language tag to "de"</button>
-
-{/key}
+  <p>the current language tag is {languageTag}</p>
+</ParaglideJS>

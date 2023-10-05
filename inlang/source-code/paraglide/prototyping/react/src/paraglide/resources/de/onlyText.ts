@@ -1,0 +1,1 @@
+export default () => "Nur text"

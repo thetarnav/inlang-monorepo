@@ -1,13 +1,11 @@
 export const sourceLanguageTag = "en"
 
-let _currentLanguageTag = sourceLanguageTag
+export const availableLanguageTags = ["en", "de"] as const
 
-export const languageTags = ["en", "de"] as const
+export let languageTag = sourceLanguageTag
 
-export const currentLanguageTag = () => _currentLanguageTag
-
-export const setCurrentLanguageTag = (tag: string): void => {
-	_currentLanguageTag = tag
+export const changeLanguageTag = (tag: string): void => {
+	languageTag = tag
 	for (const listener of changeListeners) {
 		listener(tag)
 	}
@@ -15,6 +13,6 @@ export const setCurrentLanguageTag = (tag: string): void => {
 
 const changeListeners = [] as ((tag: string) => void)[]
 
-export const onSetLanguageTag = (callback: (tag: string) => void): void => {
+export const onChangeLanguageTag = (callback: (tag: string) => void): void => {
 	changeListeners.push(callback)
 }
