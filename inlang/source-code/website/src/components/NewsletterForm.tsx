@@ -1,11 +1,8 @@
 import { createSignal } from "solid-js"
-import { useI18n } from "@solid-primitives/i18n"
 import { showToast } from "#src/components/Toast.jsx"
 import * as m from "@inlang/paraglide-js/messages"
 
 export function NewsletterForm() {
-	const [t] = useI18n()
-
 	const [email, setEmail] = createSignal("")
 	const [loading, setLoading] = createSignal(false)
 
@@ -56,14 +53,14 @@ export function NewsletterForm() {
 			showToast({
 				title: "Error",
 				variant: "danger",
-				message: t("newsletter.error.emptyEmail"),
+				message: m.newsletter_error_emptyEmail(),
 			})
 			return
 		} else if (checkEmail(emailValue) === "invalid") {
 			showToast({
 				title: "Error",
 				variant: "danger",
-				message: t("newsletter.error.invalidEmail"),
+				message: m.newsletter_error_invalidEmail(),
 			})
 			return
 		}

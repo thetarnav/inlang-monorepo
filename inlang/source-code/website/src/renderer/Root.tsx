@@ -28,29 +28,19 @@ export type RootProps = Accessor<{
 export function Root(props: { page: Component; pageProps: Record<string, unknown> }) {
 	return (
 		<ErrorBoundary fallback={(error) => <ErrorMessage error={error} />}>
-			<ParaglideSolidAdpater>
-				<LocalStorageProvider>
-					<RootWithProviders {...props} />
-				</LocalStorageProvider>
-			</ParaglideSolidAdpater>
+			<LocalStorageProvider>
+				<Show
+					when={languageTag()}
+					fallback={
+						<>
+							<Meta name="og:image" content="/images/inlang-social-image.jpg" />
+						</>
+					}
+				>
+					<Dynamic component={props.page} {...props.pageProps} />
+				</Show>
+			</LocalStorageProvider>
 		</ErrorBoundary>
-	)
-}
-
-function RootWithProviders(props: { page: Component; pageProps: Record<string, unknown> }) {
-	return (
-		<>
-			<Show
-				when={languageTag()}
-				fallback={
-					<>
-						<Meta name="og:image" content="/images/inlang-social-image.jpg" />
-					</>
-				}
-			>
-				<Dynamic component={props.page} {...props.pageProps} />
-			</Show>
-		</>
 	)
 }
 
@@ -80,10 +70,11 @@ function ErrorMessage(props: { error: Error }) {
 
 export const ParaglideSolidAdpater = (props: { children: JSXElement }) => {
 	if (!isServer) {
+		setLanguageTag("en")
 		onSetLanguageTag((tag: string) => {
 			console.log("onSetLanguageTag", tag)
 
-			window.location.href = `/${tag}`
+			//window.location.href = `/${tag}`
 		})
 	}
 

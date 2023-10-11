@@ -4,11 +4,11 @@ import { sourceLanguageTag, availableLanguageTags } from "@inlang/paraglide-js"
 export { onBeforeRoute }
 
 function onBeforeRoute(pageContext: PageContextRenderer) {
-	const { urlWithoutLocale, locale } = extractLocale(pageContext.urlOriginal)
+	const { urlWithoutLocale, languageTag } = extractLocale(pageContext.urlOriginal)
 	return {
 		pageContext: {
-			// We make `locale` available as `pageContext.locale`. We can then use https://vite-plugin-ssr.com/pageContext-anywhere to access pageContext.locale in any React/Vue component.
-			locale,
+			// We make `languageTag` available as `pageContext.languageTag`. We can then use https://vite-plugin-ssr.com/pageContext-anywhere to access pageContext.locale in any React/Vue component.
+			languageTag,
 			// We overwrite the original URL
 			urlOriginal: urlWithoutLocale,
 		},
@@ -18,17 +18,17 @@ function onBeforeRoute(pageContext: PageContextRenderer) {
 export function extractLocale(url: string) {
 	const urlPaths = url.split("/")
 
-	let locale
+	let languageTag
 	let urlWithoutLocale
 	// We remove the URL locale, for example `/de-DE/about` => `/about`
 	const firstPath = urlPaths[1]!
 	if (availableLanguageTags.filter((locale) => locale !== sourceLanguageTag).includes(firstPath)) {
-		locale = firstPath
+		languageTag = firstPath
 		urlWithoutLocale = "/" + urlPaths.slice(2).join("/")
 	} else {
-		locale = sourceLanguageTag
+		languageTag = sourceLanguageTag
 		urlWithoutLocale = url
 	}
 
-	return { locale, urlWithoutLocale }
+	return { languageTag, urlWithoutLocale }
 }
