@@ -14,7 +14,7 @@ import { telemetryBrowser } from "@inlang/telemetry"
 import { Button, type buttonType } from "./index/components/Button.jsx"
 import { SectionLayout } from "./index/components/sectionLayout.jsx"
 import { NewsletterForm } from "#src/components/NewsletterForm.jsx"
-import { setLanguageTag, languageTag } from "@inlang/paraglide-js"
+import { setLanguageTag, languageTag, availableLanguageTags } from "@inlang/paraglide-js"
 import * as m from "@inlang/paraglide-js/messages"
 
 /**
@@ -433,9 +433,10 @@ function LanguagePicker() {
 							{(language) => (
 								<sl-menu-item
 									prop:type="checkbox"
-									// @ts-ignore
-									checked={languageTag() === language.code}
-									onClick={() => setLanguageTag(language)}
+									prop:checked={languageTag() === language.code}
+									onClick={() =>
+										setLanguageTag(language.code as (typeof availableLanguageTags)[number])
+									}
 								>
 									{language.name}
 									<p class="opacity-50" slot="suffix">
