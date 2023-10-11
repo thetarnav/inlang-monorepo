@@ -4,15 +4,13 @@ import { validateEnvVariables, privateEnv } from "@inlang/env-variables"
 import * as Sentry from "@sentry/node"
 import * as Tracing from "@sentry/tracing"
 import cookieSession from "cookie-session"
-
-const isProduction = process.env.NODE_ENV === "production"
-
 import { router as authService } from "./auth/router.js"
-
 import { proxy as gitProxy } from "./git-proxy.js"
 import { router as githubProxy } from "./github-proxy.js"
 
 // --- Basic setup ---
+const isProduction = process.env.NODE_ENV === "production"
+
 const { error: errors } = validateEnvVariables({ forProduction: isProduction })
 
 if (errors) {
