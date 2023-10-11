@@ -26,19 +26,12 @@ export type RootProps = Accessor<{
  * error boundaries.
  */
 export function Root(props: { page: Component; pageProps: Record<string, unknown> }) {
+	if (props.page === undefined) throw new Error("props.page is undefined")
 	return (
 		<ErrorBoundary fallback={(error) => <ErrorMessage error={error} />}>
 			<LocalStorageProvider>
-				<Show
-					when={languageTag()}
-					fallback={
-						<>
-							<Meta name="og:image" content="/images/inlang-social-image.jpg" />
-						</>
-					}
-				>
-					<Dynamic component={props.page} {...props.pageProps} />
-				</Show>
+				<p>h</p>
+				<Dynamic component={props.page} {...props.pageProps} />
 			</LocalStorageProvider>
 		</ErrorBoundary>
 	)

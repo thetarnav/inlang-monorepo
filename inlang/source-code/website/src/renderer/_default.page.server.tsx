@@ -3,6 +3,7 @@ import { generateHydrationScript, renderToString } from "solid-js/web"
 import { escapeInject, dangerouslySkipEscape } from "vite-plugin-ssr/server"
 import { setCurrentPageContext } from "./state.js"
 import { Root } from "./Root.jsx"
+import { sourceLanguageTag, availableLanguageTags } from "@inlang/paraglide-js"
 
 // import the css
 import "./app.css"
@@ -12,6 +13,8 @@ import { MetaProvider, renderTags } from "@solidjs/meta"
 export const passToClient = ["pageProps", "routeParams", "languageTag"] as const
 
 export async function render(pageContext: PageContextRenderer): Promise<unknown> {
+	console.log("rendering page", pageContext.Page)
+
 	//! TODO most likely cross request state pollution
 	//! Need to look into this in the future
 	setCurrentPageContext(pageContext)
@@ -85,3 +88,28 @@ gtag('js', new Date());
 gtag('config', 'G-5H3SDF7TVZ');
 </script>
 `
+
+// export function onBeforePrerender(prerenderContext: any) {
+// 	const pageContexts: any = []
+// 	for (const pageContext of prerenderContext.pageContexts) {
+// 		// Duplicate pageContext for each locale
+// 		for (const languageTag of availableLanguageTags) {
+// 			// Localize URL
+// 			let { urlOriginal } = pageContext
+// 			if (languageTag !== sourceLanguageTag) {
+// 				urlOriginal = `/${languageTag}${pageContext.urlOriginal}`
+// 			}
+// 			pageContexts.push({
+// 				...pageContext,
+// 				urlOriginal,
+// 				// Set pageContext.languageTag
+// 				languageTag,
+// 			})
+// 		}
+// 	}
+// 	return {
+// 		prerenderContext: {
+// 			pageContexts,
+// 		},
+// 	}
+// }
