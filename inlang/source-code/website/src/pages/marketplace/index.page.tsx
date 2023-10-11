@@ -96,7 +96,7 @@ const Gallery = () => {
 							>
 								<div
 									style={{
-										"background-image": `url(${item.gallery?.[0]})`,
+										"background-image": item.gallery ? `url(${item.gallery?.[0]})` : undefined,
 									}}
 									class="w-full h-full flex items-center justify-center bg-surface-50 group-hover:bg-surface-100 transition-colors rounded-lg relative bg-cover bg-center border border-surface-2"
 								>
