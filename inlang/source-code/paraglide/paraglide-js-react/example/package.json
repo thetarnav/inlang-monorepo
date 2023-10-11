@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"_dev": "vite",
 		"build": "paraglide-js compile ./project.inlang.json && vite build",
 		"preview": "vite preview"
 	},
