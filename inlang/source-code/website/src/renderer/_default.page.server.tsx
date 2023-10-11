@@ -2,19 +2,17 @@ import type { PageContextRenderer } from "./types.js"
 import { generateHydrationScript, renderToString } from "solid-js/web"
 import { escapeInject, dangerouslySkipEscape } from "vite-plugin-ssr/server"
 import { setCurrentPageContext } from "./state.js"
-import { Root } from "./Root.jsx"
-import { sourceLanguageTag, availableLanguageTags } from "@inlang/paraglide-js"
+import { Root } from "./_default.root.jsx"
 
 // import the css
 import "./app.css"
 import { MetaProvider, renderTags } from "@solidjs/meta"
+import { availableLanguageTags, sourceLanguageTag } from "@inlang/paraglide-js"
 
 // See https://vite-plugin-ssr.com/data-fetching
 export const passToClient = ["pageProps", "routeParams", "languageTag"] as const
 
 export async function render(pageContext: PageContextRenderer): Promise<unknown> {
-	console.log("rendering page", pageContext.Page)
-
 	//! TODO most likely cross request state pollution
 	//! Need to look into this in the future
 	setCurrentPageContext(pageContext)
@@ -45,9 +43,21 @@ export async function render(pageContext: PageContextRenderer): Promise<unknown>
 				</MetaProvider>
 		  ))
 
+	// TODO: paraglide-js provide html headers for SEO
 	return escapeInject`<!DOCTYPE html>
-    <html lang="en" class="min-h-screen min-w-screen">
+    <html lang="${pageContext.languageTag}" class="min-h-screen min-w-screen">
       <head>
+		<!-- START i18n -->
+			<link rel="alternate" href="https://inlang.com" hreflang="x-default">
+			${dangerouslySkipEscape(
+				availableLanguageTags
+					.filter((tag) => tag !== sourceLanguageTag)
+					.map((tag) => {
+						return `<link rel="alternate" hreflang="${tag}" href="https://inlang.com/${tag}">`
+					})
+					.join("\n")
+			)}
+		<!-- END i18n -->
 			<meta charset="UTF-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- theme-color means the background color of the iOS status bar -->
@@ -88,28 +98,3 @@ gtag('js', new Date());
 gtag('config', 'G-5H3SDF7TVZ');
 </script>
 `
-
-// export function onBeforePrerender(prerenderContext: any) {
-// 	const pageContexts: any = []
-// 	for (const pageContext of prerenderContext.pageContexts) {
-// 		// Duplicate pageContext for each locale
-// 		for (const languageTag of availableLanguageTags) {
-// 			// Localize URL
-// 			let { urlOriginal } = pageContext
-// 			if (languageTag !== sourceLanguageTag) {
-// 				urlOriginal = `/${languageTag}${pageContext.urlOriginal}`
-// 			}
-// 			pageContexts.push({
-// 				...pageContext,
-// 				urlOriginal,
-// 				// Set pageContext.languageTag
-// 				languageTag,
-// 			})
-// 		}
-// 	}
-// 	return {
-// 		prerenderContext: {
-// 			pageContexts,
-// 		},
-// 	}
-// }

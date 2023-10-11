@@ -50,7 +50,7 @@ export function Page() {
 								class="text-hover-primary hover:opacity-70 cursor-pointer"
 								onClick={
 									// @ts-ignore https://github.com/brillout/vite-plugin-ssr/issues/1106
-									() => navigate(getLocale() + "/documentation/quick-start")
+									() => navigate("/documentation/quick-start")
 								}
 							>
 								inlang CLI

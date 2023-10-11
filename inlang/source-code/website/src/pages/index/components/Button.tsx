@@ -35,7 +35,7 @@ export const Button = (props: ButtonProps) => {
 				<button
 					onClick={() => {
 						// @ts-ignore - https://github.com/brillout/vite-plugin-ssr/issues/1106
-						props.href && navigate(getLocale() + props.href)
+						props.href && navigate(props.href)
 					}}
 					class={
 						"flex justify-center items-center h-10 relative gap-2 rounded-md flex-grow-0 flex-shrink-0 text-sm font-medium text-left cursor-pointer transition-all duration-200 " +

@@ -105,7 +105,7 @@ const Gallery = () => {
 										color={colorForTypeOf(item.id)}
 										customClasses="absolute right-4 top-4 z-5 backdrop-filter backdrop-blur-sm text-xs"
 									/>
-									<Show when={!item.gallery}>
+									<Show when={item.gallery === undefined}>
 										<Show
 											when={item.icon}
 											fallback={
@@ -135,12 +135,8 @@ const Gallery = () => {
 											</p>
 										</div>
 									</div>
-									<Show
-										when={
-											item.id.split(".")[0] === "plugin" ||
-											item.id.split(".")[0] === "messageLintRule"
-										}
-									>
+									{/* The sl-tooltip somehow leads to a bug when commented in. @floriandwt could you look into it? */}
+									{/* <Show when={isModule(item)}>
 										<sl-tooltip prop:content="Install">
 											<a
 												onClick={(e) => {
@@ -165,7 +161,7 @@ const Gallery = () => {
 												</svg>
 											</a>
 										</sl-tooltip>
-									</Show>
+									</Show> */}
 								</div>
 							</a>
 						</>

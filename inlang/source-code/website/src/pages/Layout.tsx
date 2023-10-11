@@ -1,4 +1,4 @@
-import { createSignal, For, type JSXElement, Match, Show, Switch } from "solid-js"
+import { createSignal, For, type JSXElement, Match, Show, Switch, onMount } from "solid-js"
 import IconTwitter from "~icons/cib/twitter"
 import IconGithub from "~icons/cib/github"
 import IconDiscord from "~icons/cib/discord"
@@ -16,6 +16,7 @@ import { SectionLayout } from "./index/components/sectionLayout.jsx"
 import { NewsletterForm } from "#src/components/NewsletterForm.jsx"
 import { setLanguageTag, languageTag, availableLanguageTags } from "@inlang/paraglide-js"
 import * as m from "@inlang/paraglide-js/messages"
+import { nameOfLanguageTag } from "@inlang/sdk"
 
 /**
  * Ensure that all elements use the same margins.
@@ -394,60 +395,48 @@ function UserDropdown() {
  * Language picker for the landing page.
  */
 function LanguagePicker() {
-	const languages = [
-		{
-			code: "en",
-			name: "English",
-		},
-		{
-			code: "de",
-			name: "Deutsch",
-		},
-		{
-			code: "zh",
-			name: "中文",
-		},
-		{
-			code: "sk",
-			name: "Slovak",
-		},
-		{
-			code: "pt-BR",
-			name: "Portuguese Brazil",
-		},
-	]
+	// avoid a flash of content when the language picker is rendered
+	const [shouldRender, setShouldRender] = createSignal(false)
+
+	onMount(() => {
+		setTimeout(() => {
+			setShouldRender(true)
+		}, 100)
+	})
 
 	return (
 		<div class="w-fit">
-			<Show when={languageTag()}>
-				<sl-dropdown>
-					<div
-						slot="trigger"
-						class="cursor-pointer h-10 flex items-center text-surface-700 font-medium link-primary text-sm"
-					>
-						<p>{languageTag().toUpperCase()}</p>
-						<IconExpand class="w-5 h-5 opacity-50" />
-					</div>
+			<sl-dropdown>
+				<div
+					slot="trigger"
+					class="cursor-pointer h-10 flex items-center text-surface-700 font-medium link-primary text-sm"
+				>
+					<p>{languageTag().toUpperCase()}</p>
+					<IconExpand class="w-5 h-5 opacity-50" />
+				</div>
+				<div
+					classList={{
+						["hidden"]: !shouldRender(),
+					}}
+				>
 					<sl-menu>
-						<For each={languages}>
-							{(language) => (
+						<For each={availableLanguageTags}>
+							{(tag) => (
 								<sl-menu-item
 									prop:type="checkbox"
-									prop:checked={languageTag() === language.code}
-									onClick={() =>
-										setLanguageTag(language.code as (typeof availableLanguageTags)[number])
-									}
+									prop:checked={languageTag() === tag}
+									onClick={() => setLanguageTag(tag)}
 								>
-									{language.name}
+									{nameOfLanguageTag(tag)}
 									<p class="opacity-50" slot="suffix">
-										{language.code}
+										{tag}
 									</p>
 								</sl-menu-item>
 							)}
 						</For>
 					</sl-menu>
-				</sl-dropdown>
-			</Show>
+				</div>
+			</sl-dropdown>
 		</div>
 	)
 }
