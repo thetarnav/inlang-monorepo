@@ -1,16 +1,10 @@
 import type { PageContextRenderer } from "./types.js"
-import { generateHydrationScript } from "solid-js/web"
 import { escapeInject, dangerouslySkipEscape } from "vike/server"
 import { setCurrentPageContext } from "./state.js"
 
 // import the css
 import "./app.css"
 import { renderTags } from "@solidjs/meta"
-import {
-	sourceLanguageTag,
-	availableLanguageTags,
-	languageTag,
-} from "@inlang/paraglide-js/inlang-marketplace"
 
 // See https://vite-plugin-ssr.com/data-fetching
 export const passToClient = ["pageProps", "routeParams", "languageTag"] as const
@@ -19,18 +13,6 @@ export async function render(pageContext: PageContextRenderer): Promise<unknown>
 	//! TODO most likely cross request state pollution
 	//! Need to look into this in the future
 	setCurrentPageContext(pageContext)
-	// generating the html from the server:
-	// 1. the server sends a hydration script for the client.
-	//    the client uses the hydration script to hydrate the page.
-	//    without hydration, no interactivity.
-	// 2. the page is pre-rendered via `renderedPage`.
-	//    pre-rendering the page makes the page immediately "visible"
-	//    to the user. Afterwards, the client hydrates the page and thereby
-	//    makes the page interactive.
-	// ! important: renderToString is used instead of
-	// ! renderToStringAsync some async resources should
-	// ! not be loaded on the server (the editor for example).
-	// ! see https://github.com/inlang/monorepo/issues/247
 
 	// from solidjs meta
 	// mutated during render so you can include in server-rendered template later
@@ -49,13 +31,10 @@ export async function render(pageContext: PageContextRenderer): Promise<unknown>
 		<!-- END import inter font -->
 			${dangerouslySkipEscape(import.meta.env.PROD ? analytics : "")}
 			${dangerouslySkipEscape(favicons)}
-			${dangerouslySkipEscape(generateHydrationScript())}
 			${dangerouslySkipEscape(renderTags(tags))}
       </head>
 	  <!-- setting min-h/w-screen to allow child elements to span to the entire screen  -->
-      <body class="editor min-h-screen min-w-screen bg-background text-on-background" id="root">
-		    ${""}
-      </body>
+      <body id="root"></body>
     </html>`
 }
 
@@ -79,28 +58,3 @@ gtag('js', new Date());
 gtag('config', 'G-5H3SDF7TVZ');
 </script>
 `
-
-export function onBeforePrerender(prerenderContext: any) {
-	const pageContexts = []
-	for (const pageContext of prerenderContext.pageContexts) {
-		// Duplicate pageContext for each locale
-		for (const locale of availableLanguageTags) {
-			// Localize URL
-			let { urlOriginal } = pageContext
-			if (locale !== sourceLanguageTag) {
-				urlOriginal = `/${sourceLanguageTag}${pageContext.urlOriginal}`
-			}
-			pageContexts.push({
-				...pageContext,
-				urlOriginal,
-				// Set pageContext.locale
-				languageTag: languageTag(),
-			})
-		}
-	}
-	return {
-		prerenderContext: {
-			pageContexts,
-		},
-	}
-}

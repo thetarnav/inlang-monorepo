@@ -62,10 +62,6 @@ export function render(pageContext: PageContextRenderer) {
 		setCurrentPage(() => pageContext.Page)
 		setCurrentPageProps(pageContext.pageProps)
 		if (isFirstRender) {
-			// The editor is only rendered client-side.
-			//
-			// In the future, the editor might be server-side rendered.
-			// For now, the trouble of isomorphic rendering the editor is not worth it.
 			console.log("renderApp from editor")
 			renderApp(
 				() => (
