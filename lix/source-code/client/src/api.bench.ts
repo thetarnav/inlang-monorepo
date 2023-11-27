@@ -1,5 +1,5 @@
 import { describe, bench } from "vitest"
-import { openRepository, createNodeishMemoryFs } from "./index.js"
+import { openRepository, createNodeishMemoryFs } from "./index.ts"
 
 describe("main workflow", () => {
 	let repository: Awaited<ReturnType<typeof openRepository>>
