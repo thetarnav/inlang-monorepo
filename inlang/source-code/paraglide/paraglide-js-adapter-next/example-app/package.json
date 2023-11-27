@@ -5,7 +5,8 @@
 	"scripts": {
 		"_dev": "paraglide-js compile --project ./project.inlang.json && next dev",
 		"build": "paraglide-js compile --project ./project.inlang.json && next build",
-		"preview": "next start"
+		"preview": "next start",
+		"lint": "next lint"
 	},
 	"dependencies": {
 		"next": "14.0.3",
