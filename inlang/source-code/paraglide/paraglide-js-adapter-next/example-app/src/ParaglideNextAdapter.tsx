@@ -1,4 +1,4 @@
-import { setLanguageTag } from "@inlang/paraglide-js/website"
+import { setLanguageTag } from "@/paraglide/runtime"
 import { headers } from "next/headers"
 
 setLanguageTag(() => {
