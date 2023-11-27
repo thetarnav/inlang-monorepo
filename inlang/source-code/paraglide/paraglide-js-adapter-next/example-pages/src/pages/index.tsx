@@ -1,7 +1,7 @@
 import * as m from "@/paraglide/messages"
 import { languageTag } from "@/paraglide/runtime"
-import Link from "next/link"
 import { useRouter } from "next/router"
+import Link from "next/link"
 
 export default function Home() {
 	const router = useRouter()
